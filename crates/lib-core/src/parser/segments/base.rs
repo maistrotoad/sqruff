@@ -1,3 +1,5 @@
+use colored::Colorize;
+use core::fmt;
 use std::any::Any;
 use std::cell::{Cell, OnceCell};
 use std::fmt::Debug;
@@ -117,10 +119,16 @@ impl Tables {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct ErasedSegment {
     pub(crate) value: Rc<NodeOrToken>,
     pub(crate) hash: Rc<AtomicU64>,
+}
+
+impl Debug for ErasedSegment {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{:#?}", self.value)
+    }
 }
 
 impl Hash for ErasedSegment {
@@ -1047,7 +1055,7 @@ pub fn position_segments(
     segment_buffer
 }
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct NodeOrToken {
     id: u32,
     syntax_kind: SyntaxKind,
@@ -1057,7 +1065,36 @@ pub struct NodeOrToken {
     code_idx: OnceCell<Rc<Vec<usize>>>,
 }
 
-#[derive(Debug, Clone)]
+impl Debug for NodeOrToken {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let has_many_segments = match &self.kind {
+            NodeOrTokenKind::Node(node) => node.segments.len() > 2,
+            NodeOrTokenKind::Token(_) => false,
+        };
+        let syntax_kind = format!("{:?}", self.syntax_kind);
+        write!(
+            f,
+            "{}\n |\n ---{:#?}\n{}",
+            if syntax_kind == "Unparsable" {
+                format!("< {} >", syntax_kind).bold().red()
+            } else if has_many_segments {
+                format!("< {} >", syntax_kind).bold().green()
+            } else {
+                format!("< {} >", syntax_kind).bold().cyan()
+            },
+            self.kind,
+            if syntax_kind == "Unparsable" {
+                format!("<END {} >", syntax_kind).bold().red()
+            } else if has_many_segments {
+                format!("<END {} >\n", syntax_kind).green()
+            } else {
+                " |".white()
+            }
+        )
+    }
+}
+
+#[derive(Clone)]
 pub enum NodeOrTokenKind {
     Node(NodeData),
     Token(TokenData),
@@ -1073,7 +1110,16 @@ impl NodeOrToken {
     }
 }
 
-#[derive(Debug, Clone)]
+impl Debug for NodeOrTokenKind {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            NodeOrTokenKind::Node(node) => write!(f, "{:#?}", node),
+            NodeOrTokenKind::Token(token) => write!(f, "{}", format!("{:?}", token.raw).blue()),
+        }
+    }
+}
+
+#[derive(Clone)]
 pub struct NodeData {
     dialect: DialectKind,
     segments: Vec<ErasedSegment>,
@@ -1081,6 +1127,12 @@ pub struct NodeData {
     source_fixes: Vec<SourceFix>,
     descendant_type_set: OnceCell<SyntaxSet>,
     raw_segments_with_ancestors: OnceCell<Vec<(ErasedSegment, Vec<PathStep>)>>,
+}
+
+impl Debug for NodeData {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{:#?}", self.segments)
+    }
 }
 
 #[derive(Debug, Clone, PartialEq)]

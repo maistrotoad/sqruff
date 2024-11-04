@@ -17,12 +17,15 @@ pub mod clickhouse;
 mod clickhouse_keywords;
 #[cfg(feature = "duckdb")]
 pub mod duckdb;
+#[cfg(feature = "enpicom_postgres")]
+pub mod enpicom_postgres;
 #[cfg(feature = "hive")]
 pub mod hive;
 #[cfg(feature = "postgres")]
 pub mod postgres;
+#[cfg(feature = "enpicom_postgres")]
 #[cfg(feature = "postgres")]
-mod postgres_keywords;
+pub mod postgres_keywords;
 #[cfg(feature = "redshift")]
 pub mod redshift;
 #[cfg(feature = "redshift")]
@@ -58,6 +61,8 @@ pub fn kind_to_dialect(kind: &DialectKind) -> Option<Dialect> {
         DialectKind::Duckdb => duckdb::dialect(),
         #[cfg(feature = "postgres")]
         DialectKind::Postgres => postgres::dialect(),
+        #[cfg(feature = "enpicom_postgres")]
+        DialectKind::EnpicomPostgres => enpicom_postgres::dialect(),
         #[cfg(feature = "redshift")]
         DialectKind::Redshift => redshift::dialect(),
         #[cfg(feature = "snowflake")]

@@ -1,4 +1,5 @@
 use std::borrow::Cow;
+use std::env;
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 use std::path::{Path, PathBuf};
@@ -115,7 +116,11 @@ impl Linter {
     /// Lint a string.
     pub fn lint_string(&self, sql: &str, filename: Option<String>, fix: bool) -> LintedFile {
         let tables = Tables::default();
-        let parsed = self.parse_string(&tables, sql, filename).unwrap();
+        let parsed = self.parse_string(&tables, sql, filename.clone()).unwrap();
+
+        if !self.validate_parsed(parsed.clone()) {
+            panic!("Unparsable segment found in file: {:?}", filename);
+        }
 
         // Lint the file and return the LintedFile
         self.lint_parsed(&tables, parsed, fix)
@@ -132,7 +137,7 @@ impl Linter {
         let mut result = LintingResult::new();
 
         if paths.is_empty() {
-            paths.push(std::env::current_dir().unwrap());
+            paths.push(env::current_dir().unwrap());
         }
 
         let mut expanded_paths = Vec::new();
@@ -186,8 +191,47 @@ impl Linter {
 
     pub fn lint_rendered(&self, rendered: RenderedFile, fix: bool) -> LintedFile {
         let tables = Tables::default();
+        let filename = rendered.filename.clone();
         let parsed = self.parse_rendered(&tables, rendered);
+
+        if !self.validate_parsed(parsed.clone()) {
+            panic!("Unparsable segment found in file: {}", filename);
+        }
         self.lint_parsed(&tables, parsed, fix)
+    }
+
+    pub fn validate_parsed(&self, parsed: ParsedString) -> bool {
+        if parsed.tree.is_none() {
+            return true;
+        }
+
+        let root_segments = parsed
+            .tree
+            .as_ref()
+            .expect("Tree to be present after parsing")
+            .segments();
+
+        let formatted_parsed: Vec<String> =
+            root_segments.iter().map(|s| format!("{:#?}", s)).collect();
+
+        let unparsable_segments = formatted_parsed
+            .iter()
+            .filter(|s| s.contains("< Unparsable >"))
+            .collect::<Vec<&String>>();
+
+        if unparsable_segments.len() > 0 {
+            println!("Unparsable segments:");
+            for segment in unparsable_segments {
+                println!("{}", segment);
+            }
+            return false;
+        }
+
+        if env::var("LOG_PARSED").is_ok() {
+            println!("Parsed:\n\n{:#?}", parsed.tree);
+        }
+
+        true
     }
 
     pub fn lint_parsed(
@@ -494,6 +538,14 @@ impl Linter {
                     return (None, violations);
                 }
 
+                if env::var("LOG_LEXED").is_ok() {
+                    let types = tokens
+                        .iter()
+                        .map(|s| format!("{:?}: {}", s.get_type(), s.raw()))
+                        .collect_vec();
+                    println!("Types:\n\n{:#?}", types);
+                }
+
                 (tokens.into(), violations)
             }
         }
@@ -523,7 +575,7 @@ impl Linter {
         let ignore_non_existent_files = ignore_non_existent_files.unwrap_or(false);
         let ignore_files = ignore_files.unwrap_or(true);
         let _working_path =
-            working_path.unwrap_or_else(|| std::env::current_dir().unwrap().display().to_string());
+            working_path.unwrap_or_else(|| env::current_dir().unwrap().display().to_string());
 
         let Ok(metadata) = std::fs::metadata(&path) else {
             if ignore_non_existent_files {

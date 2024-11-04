@@ -691,15 +691,25 @@ enum Case {
 
 fn get_case_preference(root_select: &Segments) -> Case {
     let root_segment = root_select.first().expect("Root SELECT not found");
-    let first_keyword = root_segment.recursive_crawl(
+    let segments = root_segment.recursive_crawl(
         const { &SyntaxSet::single(SyntaxKind::Keyword) },
         false,
         &SyntaxSet::EMPTY,
         true,
-    )[0]
-    .clone();
+    );
+    let first_keyword = segments.first();
 
-    if first_keyword.raw().chars().all(char::is_lowercase) {
+    if !first_keyword.is_some() {
+        return Case::Lower;
+    }
+
+    if first_keyword
+        .unwrap()
+        .clone()
+        .raw()
+        .chars()
+        .all(char::is_lowercase)
+    {
         Case::Lower
     } else {
         Case::Upper

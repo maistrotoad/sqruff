@@ -1,0 +1,71 @@
+rule: LT01
+
+test_pass_space_raw_select:
+  pass_str: |
+        SELECT *
+        FROM test_🫸number_id🫷
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_space_raw_delete_from_where:
+  pass_str: |
+        DELETE FROM test_🫸number_id🫷
+        WHERE
+            apples = 'oranges'
+            AND up = 'down'
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_space_not_equals_select:
+  pass_str: |
+    SELECT 'a' != 'b';
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_space_not_equals_select_from_where:
+  pass_str: |
+    SELECT *
+    FROM schema1.table1
+    WHERE
+        col1 = $col1::INTEGER
+        AND col2 != 'enum1'::schema1.type1_enum
+        AND col3 = ANY($col3 { queries::get, col4 }::INTEGER[])
+        AND col4 != 'other barry';
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_select_from_where_not_equals:
+  pass_str: |
+    -- name: get_by_id^
+    SELECT *
+    FROM foo.bar
+    WHERE
+        alpha = $alpha::INTEGER
+        AND beta != 'baz'::foo.quux_enum;
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_space_function:
+  pass_str: |
+    SELECT COALESCE(NULL, 1);
+  configs:
+    core:
+      dialect: enpicom_postgres
+    rules:
+        layout.type.function_name:
+            spacing_after: touch
+
+test_pass_space_dynamic_query:
+  pass_str: |
+    ☢⚞test_dynamic('A')⚟☢;
+  configs:
+    core:
+      dialect: enpicom_postgres
+    rules:
+        layout.type.function_name:
+            spacing_after: touch

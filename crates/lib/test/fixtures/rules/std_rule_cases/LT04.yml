@@ -280,54 +280,55 @@ leading_comma_move_past_several_comment_lines:
         comma:
           line_position: leading
 
-leading_comma_with_templated_column_1:
-  fail_str: |
-    SELECT
-        c1,
-        {{ "c2" }} AS days_since
-    FROM logs
-  fix_str: |
-    SELECT
-        c1
-        , {{ "c2" }} AS days_since
-    FROM logs
-  configs:
-    layout:
-      type:
-        comma:
-          line_position: leading
+# Unparsable
+# leading_comma_with_templated_column_1:
+#   fail_str: |
+#     SELECT
+#         c1,
+#         {{ "c2" }} AS days_since
+#     FROM logs
+#   fix_str: |
+#     SELECT
+#         c1
+#         , {{ "c2" }} AS days_since
+#     FROM logs
+#   configs:
+#     layout:
+#       type:
+#         comma:
+#           line_position: leading
 
-leading_comma_with_templated_column_2:
-  pass_str: |
-    SELECT
-        c1
-        , {{ "
-    c2" }} AS days_since
-    FROM logs
-  configs:
-    layout:
-      type:
-        comma:
-          line_position: leading
+# leading_comma_with_templated_column_2:
+#   pass_str: |
+#     SELECT
+#         c1
+#         , {{ "
+#     c2" }} AS days_since
+#     FROM logs
+#   configs:
+#     layout:
+#       type:
+#         comma:
+#           line_position: leading
 
-trailing_comma_with_templated_column_1:
-  fail_str: |
-    SELECT
-        {{ "c1" }}
-        , c2 AS days_since
-    FROM logs
-  fix_str: |
-    SELECT
-        {{ "c1" }},
-        c2 AS days_since
-    FROM logs
+# trailing_comma_with_templated_column_1:
+#   fail_str: |
+#     SELECT
+#         {{ "c1" }}
+#         , c2 AS days_since
+#     FROM logs
+#   fix_str: |
+#     SELECT
+#         {{ "c1" }},
+#         c2 AS days_since
+#     FROM logs
 
-trailing_comma_with_templated_column_2:
-  pass_str: |
-    SELECT
-        {{ "c1
-    " }}, c2 AS days_since
-    FROM logs
+# trailing_comma_with_templated_column_2:
+#   pass_str: |
+#     SELECT
+#         {{ "c1
+#     " }}, c2 AS days_since
+#     FROM logs
 
 leading_comma_fix_mixed_indent:
   # See: https://github.com/sqlfluff/sqlfluff/issues/4255

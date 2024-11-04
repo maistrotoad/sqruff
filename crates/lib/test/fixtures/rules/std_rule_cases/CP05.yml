@@ -45,6 +45,16 @@ test_fail_data_type_inconsistent_capitalisation_1:
       capitalisation.types:
         extended_capitalisation_policy: upper
 
+
+test_pass_ignore_words_regex_data_type_capitalisation_1:
+  # Test that we don't have the "inconsistent" bug
+  pass_str: CREATE TABLE table1 (account_id Integer);
+  configs:
+    rules:
+      capitalisation.types:
+        extended_capitalisation_policy: upper
+        ignore_words_regex: ^Int
+
 test_fail_data_type_inconsistent_capitalisation_2:
   fail_str: CREATE TABLE table1 (account_id BiGinT);
   fix_str: CREATE TABLE table1 (account_id bigint);

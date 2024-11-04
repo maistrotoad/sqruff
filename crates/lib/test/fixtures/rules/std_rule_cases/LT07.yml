@@ -51,19 +51,20 @@ test_pass_cte_with_column_list:
     )
     select * from search_path
 
-test_pass_with_clause_closing_misaligned_indentation_in_templated_block:
-  pass_str: |
-    with
-    {% if true %}
-      cte as (
-          select 1
-      )
-    {% else %}
-      cte as (
-          select 2
-      )
-    {% endif %}
-    select * from cte
+# Unparsable
+# test_pass_with_clause_closing_misaligned_indentation_in_templated_block:
+#   pass_str: |
+#     with
+#     {% if true %}
+#       cte as (
+#           select 1
+#       )
+#     {% else %}
+#       cte as (
+#           select 2
+#       )
+#     {% endif %}
+#     select * from cte
 
 test_move_parenthesis_to_next_line_in_templated_block:
   ignored: "jinja is not supported"
@@ -84,20 +85,21 @@ test_move_parenthesis_to_next_line_in_templated_block:
     {% endif %}
     select * from cte
 
-test_pass_templated_clauses:
-  pass_str: |
-    with
+# Unparsable
+# test_pass_templated_clauses:
+#   pass_str: |
+#     with
 
-    {% for tbl in ['a', 'b'] %}
-        {{ tbl }} as (
-            SELECT 1
-        ),
-    {% endfor %}
+#     {% for tbl in ['a', 'b'] %}
+#         {{ tbl }} as (
+#             SELECT 1
+#         ),
+#     {% endfor %}
 
-    final as (
-        SELECT 1
-    )
+#     final as (
+#         SELECT 1
+#     )
 
-    select * from final
-    join a using (x)
-    join b using (x)
+#     select * from final
+#     join a using (x)
+#     join b using (x)

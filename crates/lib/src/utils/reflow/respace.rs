@@ -529,10 +529,14 @@ pub fn handle_respace_inline_without_space(
     }
 
     let desc = if let Some((prev_block, next_block)) = prev_block.zip(next_block) {
+        let last_segment = prev_block.segments.last().unwrap();
+        let next_segment = next_block.segments.first().unwrap();
         format!(
-            "Expected single whitespace between {:?} and {:?}.",
-            prev_block.segments.last().unwrap().raw(),
-            next_block.segments[0].raw()
+            "Expected single whitespace between ({:?}) {:?} and ({:?}) {:?}.",
+            last_segment.get_type(),
+            last_segment.raw(),
+            next_segment.get_type(),
+            next_segment.raw()
         )
     } else {
         "Expected single whitespace.".to_owned()

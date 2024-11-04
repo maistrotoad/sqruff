@@ -592,6 +592,12 @@ pub enum SyntaxKind {
     MapTypeSchema,
     PrepareStatement,
     ExecuteStatement,
+    EnpicomSegment,
+    DynamicQueryStart,
+    DynamicQuery,
+    EnpicomIdentifier,
+    EnpicomStartSubQueryBracket,
+    EnpicomSubQuery,
 }
 
 impl SyntaxKind {
@@ -611,10 +617,10 @@ impl SyntaxKind {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
-pub struct SyntaxSet([u64; 9]);
+pub struct SyntaxSet([u64; 10]);
 
 impl SyntaxSet {
-    pub const EMPTY: SyntaxSet = Self([0; 9]);
+    pub const EMPTY: SyntaxSet = Self([0; 10]);
     const SLICE_BITS: u16 = u64::BITS as u16;
 
     pub const fn new(kinds: &[SyntaxKind]) -> Self {

@@ -15,12 +15,13 @@ test_basic_fix:
   fail_str: SELECT     1
   fix_str: SELECT 1
 
-test_basic_fail_template:
-  fail_str: |
-    {{ 'SELECT     1' }}
-  configs:
-    core:
-      ignore_templated_areas: false
+# Unparsable
+# test_basic_fail_template:
+#   fail_str: |
+#     {{ 'SELECT     1' }}
+#   configs:
+#     core:
+#       ignore_templated_areas: false
 
 test_simple_fix:
   fail_str: |

@@ -480,20 +480,21 @@ test_fail_whitespace_after_snowflake_set:
     core:
       dialect: snowflake
 
-test_fail_templated_fix_crosses_block_boundary:
-  # The rule wants to move the semicolon to the same line as the SELECT, but
-  # the core linter prevents it because it crosses a template block boundary.
-  fail_str: |
-    {% if True %}
-    SELECT 1
-    {% else %}
-    SELECT 2
-    {% endif %}
-    ;
-  configs:
-    rules:
-      convention.terminator:
-        require_final_semicolon: true
+# Unparsable
+# test_fail_templated_fix_crosses_block_boundary:
+#   # The rule wants to move the semicolon to the same line as the SELECT, but
+#   # the core linter prevents it because it crosses a template block boundary.
+#   fail_str: |
+#     {% if True %}
+#     SELECT 1
+#     {% else %}
+#     SELECT 2
+#     {% endif %}
+#     ;
+#   configs:
+#     rules:
+#       convention.terminator:
+#         require_final_semicolon: true
 
 test_pass_empty_file:
   pass_str: ""

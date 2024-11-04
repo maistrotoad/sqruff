@@ -20,7 +20,7 @@ impl<T: Into<MatchableTraitImpl>> ToMatchable for T {
 }
 
 pub fn capitalize(s: &str) -> String {
-    assert!(s.is_ascii());
+    // assert!(s.is_ascii());
 
     let mut chars = s.chars();
     let Some(first_char) = chars.next() else {

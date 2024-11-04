@@ -23,7 +23,8 @@ pub fn aggregate_function_behaviour(
         | DialectKind::Snowflake
         | DialectKind::Duckdb
         | DialectKind::Clickhouse
-        | DialectKind::Postgres => HashMap::from([
+        | DialectKind::Postgres
+        | DialectKind::EnpicomPostgres => HashMap::from([
             (
                 Operation::Min,
                 TreatmentOfNullExpressionsInAggregates::IgnoreNullExpressions,
