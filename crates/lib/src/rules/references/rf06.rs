@@ -107,7 +107,7 @@ SELECT 123 as `foo` -- For BigQuery, MySql, ...
     fn eval(&self, context: RuleContext) -> Vec<LintResult> {
         if matches!(
             context.dialect.name,
-            DialectKind::Postgres | DialectKind::Snowflake
+            DialectKind::Postgres | DialectKind::EnpicomPostgres | DialectKind::Snowflake
         ) && !self.force_enable
         {
             return Vec::new();

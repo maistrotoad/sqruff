@@ -274,7 +274,9 @@ pub fn handle_segment(
         "lower" => fixed_raw.to_lowercase(),
         "capitalise" => capitalize(&fixed_raw),
         "pascal" => {
-            let re = lazy_regex::regex!(r"([^a-zA-Z0-9]+|^)([a-zA-Z0-9])([a-zA-Z0-9]*)");
+            let re = lazy_regex::regex!(
+                r"([^a-zA-Z0-9🫸🫷💣]+|^)([a-zA-Z0-9🫸🫷💣])([a-zA-Z0-9🫸🫷💣]*)"
+            );
             re.replace_all(&fixed_raw, |caps: &regex::Captures| {
                 let mut replacement_string = String::from(&caps[1]);
                 let capitalized = caps[2].to_uppercase();

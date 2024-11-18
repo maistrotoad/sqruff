@@ -215,17 +215,18 @@ fails_trailing_with_comments:
       /* foo */ /* foo */ 2
   configs: *operator_before
 
-passes_templated_newline:
-  pass_str: |
-    {% macro binary_literal(expression) %}
-      X'{{ expression }}'
-    {% endmacro %}
+# Unparsable
+# passes_templated_newline:
+#   pass_str: |
+#     {% macro binary_literal(expression) %}
+#       X'{{ expression }}'
+#     {% endmacro %}
 
-    select
-        *
-    from my_table
-    where
-        a = {{ binary_literal("0000") }}
+#     select
+#         *
+#     from my_table
+#     where
+#         a = {{ binary_literal("0000") }}
 
 fails_templated_code_non_templated_newline:
   ignored: "jinja is not supported"

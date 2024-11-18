@@ -77,12 +77,10 @@ FROM foo
         let segment = FunctionalContext::new(rule_cx.clone()).segment();
         let children = segment.children(None);
 
-        let last_content: ErasedSegment = children
-            .clone()
-            .last()
-            .cloned()
+        let last = children.clone().last().cloned();
+        let last_content: ErasedSegment = last
             .filter(|sp: &ErasedSegment| sp.is_code())
-            .unwrap();
+            .expect("Last content was not code");
 
         let mut fixes = Vec::new();
 

@@ -13,12 +13,20 @@ pub struct Args {
     list: bool,
     ignored: bool,
     no_capture: bool,
+    rule_name: Option<String>,
 }
 
 impl Args {
     fn parse_args(&mut self, iter: impl Iterator<Item = String>) {
         for arg in iter {
+            println!("arg: {:?}", arg);
             if arg == "--" {
+                continue;
+            }
+
+            if self.list {
+                self.rule_name = Some(arg);
+                self.list = false;
                 continue;
             }
 
@@ -69,6 +77,7 @@ fn main() {
 
     // FIXME: improve support for nextest
     if args.list {
+        println!("test rule_name {:?}", args.rule_name);
         if !args.ignored {
             println!("rules: test");
         }
@@ -88,6 +97,7 @@ fn main() {
         let input = std::fs::read_to_string(path).unwrap();
 
         let file: TestFile = serde_yaml::from_str(&input).unwrap();
+
         core.get_mut("core").unwrap().as_map_mut().unwrap().insert(
             "rule_allowlist".into(),
             Value::Array(vec![Value::String(file.rule.clone().into())]),
@@ -97,6 +107,9 @@ fn main() {
         linter.config_mut().reload_reflow();
 
         for case in file.cases {
+            if args.rule_name.is_some() && args.rule_name != Some(case.name.clone()) {
+                continue;
+            }
             let dialect_name = case
                 .configs
                 .get("core")

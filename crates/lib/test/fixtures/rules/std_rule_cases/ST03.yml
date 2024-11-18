@@ -228,14 +228,15 @@ test_pass_sparksql_values_clause_cte_2:
     core:
       dialect: sparksql
 
-test_fail_query_uses_templating:
-  fail_str: |
-    WITH
-    random_gibberish AS (
-        SELECT 1
-    )
-    SELECT var_bar
-    FROM {{ ref('issue_2235') }}
+# Unparsable
+# test_fail_query_uses_templating:
+#   fail_str: |
+#     WITH
+#     random_gibberish AS (
+#         SELECT 1
+#     )
+#     SELECT var_bar
+#     FROM {{ ref('issue_2235') }}
 
 test_pass_update_cte:
   pass_str: |

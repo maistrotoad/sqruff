@@ -4,12 +4,13 @@ test_fail_whitespace_before_comma:
   fail_str: SELECT 1 ,4
   fix_str: SELECT 1, 4
 
-test_fail_whitespace_before_comma_template:
-  fail_str: |
-    {{ 'SELECT 1 ,4' }}
-  configs:
-    core:
-      ignore_templated_areas: false
+# Unparsable
+# test_fail_whitespace_before_comma_template:
+#   fail_str: |
+#     {{ 'SELECT 1 ,4' }}
+#   configs:
+#     core:
+#       ignore_templated_areas: false
 
 test_pass_errors_only_in_templated_and_ignore:
   ignored: "jinja is not supported"

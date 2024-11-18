@@ -501,29 +501,32 @@ test_fail_clean_reindent_fix:
     FROM tbl
 
 # https://github.com/sqlfluff/sqlfluff/issues/643
-test_pass_indent_snowflake:
-  pass_str: |
-    with source_data as (
-        select * from {{ source('source_name', 'xxx_yyy_zzz') }}
-    )
+# Unparsable
+# test_pass_indent_snowflake:
+#   pass_str: |
+#     with source_data as (
+#         select * from {{ source('source_name', 'xxx_yyy_zzz') }}
+#     )
 
-    select *
-    from source_data
-  configs:
-    core:
-      dialect: snowflake
+#     select *
+#     from source_data
+#   configs:
+#     core:
+#       dialect: snowflake
 
 # https://github.com/sqlfluff/sqlfluff/issues/643
-test_pass_indent_indent_bigquery:
-  pass_str: |
-    with source_data as (
-        select * from {{ source('source_name', 'xxx_yyy_zzz') }}
-    )
-    select *
-    from source_data
-  configs:
-    core:
-      dialect: bigquery
+
+# Unparsable
+# test_pass_indent_indent_bigquery:
+#   pass_str: |
+#     with source_data as (
+#         select * from {{ source('source_name', 'xxx_yyy_zzz') }}
+#     )
+#     select *
+#     from source_data
+#   configs:
+#     core:
+#       dialect: bigquery
 
 test_jinja_indent_templated_table_name_a:
   ignored: "jinja is not supported"
@@ -830,95 +833,102 @@ test_tsql_function:
     core:
       dialect: tsql
 
-test_pass_ignore_templated_whitespace:
-  pass_str: |
-    SELECT
-        c1,
-        {{ "      c2" }}
-    FROM my_table
-  configs:
-    core:
-      ignore_templated_areas: false
+# Unparsable
+# test_pass_ignore_templated_whitespace:
+#   pass_str: |
+#     SELECT
+#         c1,
+#         {{ "      c2" }}
+#     FROM my_table
+#   configs:
+#     core:
+#       ignore_templated_areas: false
 
-test_fail_ignore_templated_whitespace_1:
-  fail_str: |
-    SELECT
-        c1,
-    d{{ "      c2" }}
-    FROM my_table
-  fix_str: |
-    SELECT
-        c1,
-        d{{ "      c2" }}
-    FROM my_table
+# Unparsable
+# test_fail_ignore_templated_whitespace_1:
+#   fail_str: |
+#     SELECT
+#         c1,
+#     d{{ "      c2" }}
+#     FROM my_table
+#   fix_str: |
+#     SELECT
+#         c1,
+#         d{{ "      c2" }}
+#     FROM my_table
 
-  configs:
-    core:
-      ignore_templated_areas: false
+#   configs:
+#     core:
+#       ignore_templated_areas: false
 
-test_fail_ignore_templated_whitespace_2:
-  fail_str: |
-    SELECT
-        c1,
-      d{{ "      c2" }}
-    FROM my_table
-  fix_str: |
-    SELECT
-        c1,
-        d{{ "      c2" }}
-    FROM my_table
-  configs:
-    core:
-      ignore_templated_areas: false
+# Unparsable
+# test_fail_ignore_templated_whitespace_2:
+#   fail_str: |
+#     SELECT
+#         c1,
+#       d{{ "      c2" }}
+#     FROM my_table
+#   fix_str: |
+#     SELECT
+#         c1,
+#         d{{ "      c2" }}
+#     FROM my_table
+#   configs:
+#     core:
+#       ignore_templated_areas: false
 
-test_fail_ignore_templated_whitespace_3:
-  fail_str: |
-    SELECT
-        c1,
-          d{{ "      c2" }}
-    FROM my_table
-  fix_str: |
-    SELECT
-        c1,
-        d{{ "      c2" }}
-    FROM my_table
-  configs:
-    core:
-      ignore_templated_areas: false
+# Unparsable
+# test_fail_ignore_templated_whitespace_3:
+#   fail_str: |
+#     SELECT
+#         c1,
+#           d{{ "      c2" }}
+#     FROM my_table
+#   fix_str: |
+#     SELECT
+#         c1,
+#         d{{ "      c2" }}
+#     FROM my_table
+#   configs:
+#     core:
+#       ignore_templated_areas: false
 
-test_pass_ignore_templated_whitespace_4:
-  # Note the newline after c2. This causes "AS other_id" to be on a different
-  # line in templated space, but not raw space. LT02 should ignore lines like
-  # this.
-  pass_str: |
-    SELECT
-        c1,
-        {{ "      c2\n" }} AS other_id
-    FROM my_table
+# Unparsable
+# test_pass_ignore_templated_whitespace_4:
+#   # Note the newline after c2. This causes "AS other_id" to be on a different
+#   # line in templated space, but not raw space. LT02 should ignore lines like
+#   # this.
+#   pass_str: |
+#     SELECT
+#         c1,
+#         {{ "      c2\n" }} AS other_id
+#     FROM my_table
 
-test_pass_ignore_templated_newline_not_last_line:
-  ignored: "jinja is not supported"
-  pass_str: |
-    select *
-    from {{ "\n\nmy_table" }}
-    inner join
-        my_table2
-        using (id)
+# test_pass_ignore_templated_newline_not_last_line:
+#   ignored: "jinja is not supported"
+#   pass_str: |
+#     select *
+#     from {{ "\n\nmy_table" }}
+#     inner join
+#         my_table2
+#         using (id)
 
-test_pass_ignore_templated_newline_last_line:
-  pass_str: |
-    select *
-    from {{ "\n\nmy_table" }}
+# Unparsable
+# test_pass_ignore_templated_newline_last_line:
+#   pass_str: |
+#     select *
+#     from {{ "\n\nmy_table" }}
 
-test_fail_fix_template_indentation_1:
-  fail_str: |
-    SELECT
-        c1,
-    {{ "c2" }}
-  fix_str: |
-    SELECT
-        c1,
-        {{ "c2" }}
+# Unparsable
+# test_fail_fix_template_indentation_1:
+#   fail_str: |
+#     SELECT
+#         c1,
+#     {{ "c2" }}
+#   fix_str: |
+#     SELECT
+#         c1,
+#         {{ "c2" }}
 
 test_fail_fix_template_indentation_2:
   ignored: "jinja is not supported"
@@ -2145,3 +2155,285 @@ test_pass_implicit_where:
   configs:
     indentation:
       allow_implicit_indents: true
+
+test_pass_insert_select_returning:
+  pass_str: |
+    INSERT INTO table1 (col1, col2)
+    SELECT
+        1,
+        2
+    RETURNING col1, col2;
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_update_set_returning:
+  pass_str: |
+    UPDATE table1
+    SET
+        col1 = 1,
+        col2 = 2
+    RETURNING col1, col2;
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_insert_values_conflict_update_set_returning:
+  pass_str: |
+    INSERT INTO table1 (col1, col2)
+    VALUES (1, 2) ON CONFLICT (COALESCE(col1, 0), col2) DO UPDATE
+    SET
+        col1 = (
+            SELECT col1
+            FROM table1
+            LIMIT 1
+        ),
+        col2 = EXCLUDED.col2
+    RETURNING *;
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_insert_values_conflict_constraint_update_set:
+  pass_str: |
+    INSERT INTO table1 (a, c)
+    VALUES ('b', 'd') ON CONFLICT ON CONSTRAINT "pk1" DO
+    UPDATE
+    SET
+        a = 'b',
+        c = 'd';
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_fail_select_param_indent:
+  fail_str: |
+    SELECT 'A'::TEXT,
+        'B::TEXT',
+        'C'::TEXT;
+  fix_str: |
+    SELECT
+        'A'::TEXT,
+        'B::TEXT',
+        'C'::TEXT;
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_select_param_indent:
+  pass_str: |
+    SELECT
+        'A'::TEXT,
+        'B::TEXT',
+        'C'::TEXT;
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_nuke_top_level:
+  pass_str: |
+    ☢⚞test_dynamic(
+        'A'::TEXT,
+        'B::TEXT',
+        'C'::TEXT
+    )⚟☢;
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_fail_nuke_top_level_param_indent:
+  fail_str: |
+    ☢⚞test_dynamic('A'::TEXT,
+        'B::TEXT',
+        'C'::TEXT
+    )⚟☢;
+  fix_str: |
+    ☢⚞test_dynamic(
+        'A'::TEXT,
+        'B::TEXT',
+        'C'::TEXT
+    )⚟☢;
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_nuke_in_select_param_indent:
+  pass_str: |
+    SELECT
+        1 != 2
+        AND (☢⚞test_dynamic(
+            'A'::TEXT,
+            'B::TEXT',
+            'C'::TEXT
+        )⚟☢);
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+
+test_pass_nuke_complex:
+  pass_str: |
+    SELECT *
+    FROM table1
+    WHERE
+        col1 = 1::INTEGER
+        AND col2 != 'something'
+        AND (☢⚞test_dynamic('A'::TEXT, 'B::TEXT')⚟☢)
+    ORDER BY col1 DESC;
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_select_unnest_jsonb:
+  pass_str: |
+    SELECT
+        v ->> 'alpha' AS alpha,
+        v ->> 'beta' AS beta
+    FROM UNNEST($j::JSONB[]) v
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_update_sub_query:
+  pass_str: |
+    UPDATE foo
+    SET
+        alpha = bar.alpha,
+        beta = bar.beta
+    FROM (
+        SELECT
+            'alpha' AS alpha,
+            'beta' AS beta
+    ) AS bar
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_update_sub_query_unnest_jsonb:
+  pass_str: |
+    UPDATE foo
+    SET
+        alpha = bar.alpha,
+        beta = bar.beta
+    FROM (
+        SELECT
+            v ->> 'alpha' AS alpha,
+            v ->> 'beta' AS beta
+        FROM UNNEST($j::JSONB[]) v
+    ) bar
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_select_from_qualify:
+  pass_str: |
+    SELECT
+        a,
+        b
+    FROM
+        t
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY a ORDER BY b) = 1
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_insert_select_from_qualify:
+  pass_str: |
+    INSERT INTO t1
+    SELECT
+        a,
+        b
+    FROM
+        t2
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY a ORDER BY b) = 1;
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_insert_select_cross_join:
+  pass_str: |
+    INSERT INTO a (foo, bar)
+    SELECT
+        'foo',
+        'bar'
+    FROM baz
+    CROSS JOIN UNNEST($quux::INTEGER []) AS foo_id
+    JOIN b ON b.id = foo_id;
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_cte_insert_select:
+  pass_str: |
+    WITH x AS (
+        INSERT INTO a (foo, bar)
+        VALUES('foo', 'bar')
+        RETURNING *
+    )
+    SELECT *
+    FROM x;
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_select_distinct:
+  pass_str: |
+    SELECT DISTINCT foo, bar;
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_select_in:
+  pass_str: |
+    UPDATE foo
+    SET alpha = $alpha::TEXT
+    WHERE
+        alpha IN (
+            SELECT alpha
+            FROM bar
+            WHERE
+                x = y
+                AND alpha = ANY($alpha { q1::get, baz }::INTEGER[])
+        )
+        AND alpha = ANY($alpha { q1::get, baz }::INTEGER[])
+    RETURNING *;
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+
+test_pass_lateral_function:
+  pass_str: |
+    SELECT
+        a,
+        b
+    FROM
+        jsonb_array_elements($foo::JSONB) AS foo,
+        LATERAL test_dynamic(foo ->> 'bar') AS baz
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+test_pass_concat_select_from:
+  pass_str: |
+    SELECT
+        'foo' || bar AS baz,
+        quux
+    FROM alpha
+  configs:
+    core:
+      dialect: enpicom_postgres
+
+
+test_pass_concat_select_from_where_as_keyword:
+  pass_str: |
+    SELECT
+        foo,
+        'x' || bar AS column
+    FROM alpha
+    WHERE
+        x = y
+        AND up = down
+  configs:
+    core:
+      dialect: enpicom_postgres

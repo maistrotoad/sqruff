@@ -60,6 +60,7 @@ SELECT a, b FROM table_2
         &[
             DialectKind::Bigquery,
             DialectKind::Postgres,
+            DialectKind::EnpicomPostgres,
             DialectKind::Snowflake,
             DialectKind::Clickhouse,
             DialectKind::Sparksql,

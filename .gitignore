@@ -21,3 +21,6 @@ __pycache__/
 
 # Secrets
 .env
+
+# Personal VSCode settings
+.vscode/
